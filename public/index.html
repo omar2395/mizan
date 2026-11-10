@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mizan — Demand Intelligence · Baraka Markets</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2312100C'/%3E%3Cpath d='M8 22 L8 12 M8 12 L13 18 L18 12 M18 12 L18 22' stroke='%23E8A33D' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='24' cy='11' r='2.4' fill='%23E8A33D'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+      <rect width="32" height="32" rx="7" class="mark-bg"/>
+      <path d="M8 22 L8 12 M8 12 L13 18 L18 12 M18 12 L18 22" class="mark-m" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="24" cy="11" r="2.4" class="mark-dot"/>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-name">Mizan <span class="brand-ar">ميزان</span></span>
+      <span class="brand-sub">Demand Intelligence · Baraka Markets</span>
+    </div>
+  </div>
+
+  <nav class="store-pills" id="storePills" aria-label="Branch filter"></nav>
+
+  <div class="topbar-right">
+    <span class="asof" id="asOf"></span>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">
+      <svg class="icon-moon" viewBox="0 0 20 20" width="16" height="16"><path d="M17 11.5A7.5 7.5 0 0 1 8.5 3 7.5 7.5 0 1 0 17 11.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      <svg class="icon-sun" viewBox="0 0 20 20" width="16" height="16"><circle cx="10" cy="10" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 1.5v2M10 16.5v2M18.5 10h-2M3.5 10h-2M16 4l-1.4 1.4M5.4 14.6 4 16M16 16l-1.4-1.4M5.4 5.4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<main class="shell">
+
+  <!-- KPI strip -->
+  <section class="kpis" id="kpis" aria-label="Key metrics"></section>
+
+  <div class="layout">
+    <div class="main-col">
+
+      <!-- Forecast panel -->
+      <section class="panel forecast-panel">
+        <header class="panel-head">
+          <div>
+            <h2 class="panel-title" id="fcTitle">—</h2>
+            <p class="panel-meta" id="fcMeta">—</p>
+          </div>
+          <div class="legend">
+            <span class="lg"><i class="sw sw-hist"></i>Actual</span>
+            <span class="lg"><i class="sw sw-fc"></i>Forecast</span>
+            <span class="lg"><i class="sw sw-band"></i>90% band</span>
+          </div>
+        </header>
+        <div class="chart-wrap"><svg id="chart" class="chart" role="img" aria-label="Demand forecast chart"></svg>
+          <div class="chart-tip" id="chartTip" hidden></div>
+        </div>
+        <footer class="fc-chips" id="fcChips"></footer>
+      </section>
+
+      <!-- Risk board -->
+      <section class="panel">
+        <header class="panel-head">
+          <div>
+            <h2 class="panel-title">Replenishment risk board</h2>
+            <p class="panel-meta">Every SKU, forecast-aware. Click a row to chart it.</p>
+          </div>
+          <div class="seg" id="riskFilter" role="tablist">
+            <button class="seg-btn is-on" data-f="all">All</button>
+            <button class="seg-btn" data-f="risk">At risk</button>
+            <button class="seg-btn" data-f="overstock">Overstock</button>
+          </div>
+        </header>
+        <div class="table-wrap">
+          <table class="risk-table" id="riskTable">
+            <thead>
+              <tr>
+                <th>SKU</th><th>30d trend</th><th class="num">Sold 30d</th><th class="num">On hand</th>
+                <th>Cover</th><th>Status</th><th class="num">Reorder</th>
+              </tr>
+            </thead>
+            <tbody id="riskBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Merchandising -->
+      <section class="panel">
+        <header class="panel-head">
+          <div>
+            <h2 class="panel-title">Merchandising calls</h2>
+            <p class="panel-meta">Computed from trend, margin and cover — the "why" is attached to every call.</p>
+          </div>
+        </header>
+        <div class="merch-grid" id="merchGrid"></div>
+      </section>
+
+    </div>
+
+    <!-- AI rail -->
+    <aside class="ai-rail">
+      <section class="panel ai-panel" id="aiPanel">
+        <header class="panel-head">
+          <div>
+            <h2 class="panel-title">AI weekly brief</h2>
+            <p class="panel-meta" id="aiMeta">Narrates the computed plan · <span id="aiModel">—</span></p>
+          </div>
+          <span class="ai-dot" id="aiDot" title="AI status"></span>
+        </header>
+        <div class="ai-body" id="aiBody">
+          <div class="ai-empty" id="aiEmpty">
+            <svg viewBox="0 0 48 48" width="44" height="44" aria-hidden="true">
+              <path d="M10 34 V22 M18 34 V14 M26 34 V26 M34 34 V10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity=".45"/>
+              <path d="M8 38 h32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity=".25"/>
+              <circle cx="38" cy="12" r="4" fill="currentColor" opacity=".8"/>
+            </svg>
+            <p>Mizan reads this week's forecasts, stock positions and reorder math — then writes the brief your ops director would want on a Sunday morning.</p>
+          </div>
+        </div>
+        <footer class="ai-foot">
+          <button class="btn-primary" id="aiBtn">
+            <span class="btn-label">Generate weekly brief</span>
+            <span class="btn-spin" aria-hidden="true"></span>
+          </button>
+        </footer>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="page-foot">
+    <span>Mizan · seeded data, real forecasting math, live AI narration</span>
+    <span id="footStamp"></span>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
